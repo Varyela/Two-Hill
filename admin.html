@@ -426,7 +426,7 @@
 
         // Загрузка и отображение заявок
         function loadBookings() {
-            const bookings = BookingAPI.getAllBookings();
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
             const bookingsList = document.getElementById('bookings-list');
             const noBookings = document.getElementById('no-bookings');
             
