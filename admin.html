@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель - Гостевой дом "Два холма"</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #6d4c41;
+            --accent-color: #ffa000;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+            --success-color: #4caf50;
+            --error-color: #f44336;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .admin-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-header h1 {
+            font-size: 1.8rem;
+        }
+        
+        .admin-header .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .admin-content {
+            padding: 2rem;
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .filters {
+            background: var(--light-color);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+        
+        .filter-group label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .filter-group select, 
+        .filter-group input {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 1.5rem;
+        }
+        
+        .btn:hover {
+            background: #e69100;
+        }
+        
+        .btn-secondary {
+            background: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background: #5d4037;
+        }
+        
+        .btn-danger {
+            background: var(--error-color);
+        }
+        
+        .btn-danger:hover {
+            background: #d32f2f;
+        }
+        
+        .bookings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+        
+        .bookings-table th, 
+        .bookings-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .bookings-table th {
+            background-color: var(--light-color);
+            position: sticky;
+            top: 0;
+        }
+        
+        .bookings-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .status-new {
+            background-color: #ff9800;
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+        
+        .status-confirmed {
+            background-color: var(--success-color);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+        
+        .status-cancelled {
+            background-color: var(--error-color);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .btn-confirm {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-cancel {
+            background-color: var(--error-color);
+            color: white;
+        }
+        
+        .btn-edit {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .admin-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 5px;
+            color: white;
+            z-index: 2000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background-color: var(--success-color);
+        }
+        
+        .notification.error {
+            background-color: var(--error-color);
+        }
+        
+        .no-bookings {
+            text-align: center;
+            padding: 2rem;
+            background: var(--light-color);
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .bookings-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .admin-actions {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <div class="logo">Гостевой дом "Два холма"</div>
+            <h1>Панель администратора</h1>
+        </div>
+        
+        <div class="admin-content">
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <h3>Всего заявок</h3>
+                    <div class="stat-number" id="total-bookings">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Новые заявки</h3>
+                    <div class="stat-number" id="new-bookings">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Подтвержденные</h3>
+                    <div class="stat-number" id="confirmed-bookings">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Отмененные</h3>
+                    <div class="stat-number" id="cancelled-bookings">0</div>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="status-filter">Статус</label>
+                    <select id="status-filter">
+                        <option value="all">Все статусы</option>
+                        <option value="new">Новые</option>
+                        <option value="confirmed">Подтвержденные</option>
+                        <option value="cancelled">Отмененные</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="date-from">Дата с</label>
+                    <input type="date" id="date-from">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="date-to">Дата по</label>
+                    <input type="date" id="date-to">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="search">Поиск</label>
+                    <input type="text" id="search" placeholder="Имя, телефон, email">
+                </div>
+            </div>
+            
+            <div class="admin-actions">
+                <button class="btn" id="refresh-btn">
+                    <i class="fas fa-sync-alt"></i> Обновить
+                </button>
+                <button class="btn btn-secondary" id="export-btn">
+                    <i class="fas fa-download"></i> Экспорт в CSV
+                </button>
+                <button class="btn btn-danger" id="clear-btn">
+                    <i class="fas fa-trash"></i> Очистить все
+                </button>
+            </div>
+            
+            <table class="bookings-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Имя</th>
+                        <th>Телефон</th>
+                        <th>Email</th>
+                        <th>Дата заезда</th>
+                        <th>Дата выезда</th>
+                        <th>Гости</th>
+                        <th>Статус</th>
+                        <th>Дата создания</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="bookings-list">
+                    <!-- Заявки будут загружаться здесь -->
+                </tbody>
+            </table>
+            
+            <div id="no-bookings" class="no-bookings" style="display: none;">
+                <h3>Нет заявок на бронирование</h3>
+                <p>Все заявки из формы бронирования будут отображаться здесь</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // API для работы с бронированиями
+        const BookingAPI = {
+            // Получение всех бронирований
+            getAllBookings: function() {
+                return JSON.parse(localStorage.getItem('bookings') || '[]');
+            },
+            
+            // Обновление статуса бронирования
+            updateBookingStatus: function(bookingId, status) {
+                let bookings = this.getAllBookings();
+                const bookingIndex = bookings.findIndex(b => b.id === bookingId);
+                
+                if (bookingIndex !== -1) {
+                    bookings[bookingIndex].status = status;
+                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                    return true;
+                }
+                
+                return false;
+            },
+            
+            // Удаление всех бронирований
+            clearAllBookings: function() {
+                localStorage.setItem('bookings', JSON.stringify([]));
+                return true;
+            },
+            
+            // Удаление конкретного бронирования
+            deleteBooking: function(bookingId) {
+                let bookings = this.getAllBookings();
+                const filteredBookings = bookings.filter(b => b.id !== bookingId);
+                localStorage.setItem('bookings', JSON.stringify(filteredBookings));
+                return true;
+            }
+        };
+
+        // Загрузка и отображение заявок
+        function loadBookings() {
+            const bookings = BookingAPI.getAllBookings();
+            const bookingsList = document.getElementById('bookings-list');
+            const noBookings = document.getElementById('no-bookings');
+            
+            bookingsList.innerHTML = '';
+            
+            // Обновляем статистику
+            updateStats(bookings);
+            
+            if (bookings.length === 0) {
+                noBookings.style.display = 'block';
+                return;
+            }
+            
+            noBookings.style.display = 'none';
+            
+            // Применяем фильтры
+            const filteredBookings = applyFilters(bookings);
+            
+            // Сортируем по дате (сначала новые)
+            filteredBookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            filteredBookings.forEach(booking => {
+                const row = document.createElement('tr');
+                
+                // Форматируем даты
+                const checkinDate = new Date(booking.checkin).toLocaleDateString('ru-RU');
+                const checkoutDate = new Date(booking.checkout).toLocaleDateString('ru-RU');
+                const createdDate = new Date(booking.createdAt).toLocaleDateString('ru-RU');
+                const createdTime = new Date(booking.createdAt).toLocaleTimeString('ru-RU');
+                
+                // Определяем класс статуса
+                let statusClass = 'status-new';
+                if (booking.status === 'confirmed') statusClass = 'status-confirmed';
+                if (booking.status === 'cancelled') statusClass = 'status-cancelled';
+                
+                row.innerHTML = `
+                    <td>${booking.id}</td>
+                    <td>${booking.name}</td>
+                    <td><a href="tel:${booking.phone}">${booking.phone}</a></td>
+                    <td><a href="mailto:${booking.email}">${booking.email}</a></td>
+                    <td>${checkinDate}</td>
+                    <td>${checkoutDate}</td>
+                    <td>${booking.guests} гост.</td>
+                    <td><span class="${statusClass}">${getStatusText(booking.status)}</span></td>
+                    <td>${createdDate} ${createdTime}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn btn-confirm" onclick="changeStatus(${booking.id}, 'confirmed')">Подтв.</button>
+                            <button class="action-btn btn-cancel" onclick="changeStatus(${booking.id}, 'cancelled')">Откл.</button>
+                            <button class="action-btn btn-edit" onclick="editBooking(${booking.id})">Ред.</button>
+                        </div>
+                    </td>
+                `;
+                
+                bookingsList.appendChild(row);
+            });
+        }
+        
+        // Применение фильтров
+        function applyFilters(bookings) {
+            const statusFilter = document.getElementById('status-filter').value;
+            const dateFrom = document.getElementById('date-from').value;
+            const dateTo = document.getElementById('date-to').value;
+            const searchText = document.getElementById('search').value.toLowerCase();
+            
+            let filtered = bookings;
+            
+            // Фильтр по статусу
+            if (statusFilter !== 'all') {
+                filtered = filtered.filter(booking => booking.status === statusFilter);
+            }
+            
+            // Фильтр по дате
+            if (dateFrom) {
+                filtered = filtered.filter(booking => booking.checkin >= dateFrom);
+            }
+            
+            if (dateTo) {
+                filtered = filtered.filter(booking => booking.checkin <= dateTo);
+            }
+            
+            // Поиск
+            if (searchText) {
+                filtered = filtered.filter(booking => 
+                    booking.name.toLowerCase().includes(searchText) ||
+                    booking.phone.toLowerCase().includes(searchText) ||
+                    booking.email.toLowerCase().includes(searchText)
+                );
+            }
+            
+            return filtered;
+        }
+        
+        // Обновление статистики
+        function updateStats(bookings) {
+            const total = bookings.length;
+            const newCount = bookings.filter(b => b.status === 'new').length;
+            const confirmedCount = bookings.filter(b => b.status === 'confirmed').length;
+            const cancelledCount = bookings.filter(b => b.status === 'cancelled').length;
+            
+            document.getElementById('total-bookings').textContent = total;
+            document.getElementById('new-bookings').textContent = newCount;
+            document.getElementById('confirmed-bookings').textContent = confirmedCount;
+            document.getElementById('cancelled-bookings').textContent = cancelledCount;
+        }
+        
+        // Получение текста статуса
+        function getStatusText(status) {
+            switch(status) {
+                case 'new': return 'Новая';
+                case 'confirmed': return 'Подтверждена';
+                case 'cancelled': return 'Отменена';
+                default: return status;
+            }
+        }
+        
+        // Изменение статуса заявки
+        function changeStatus(bookingId, status) {
+            if (BookingAPI.updateBookingStatus(bookingId, status)) {
+                showNotification('Статус заявки обновлен', 'success');
+                loadBookings();
+            } else {
+                showNotification('Ошибка при обновлении статуса', 'error');
+            }
+        }
+        
+        // Редактирование заявки
+        function editBooking(bookingId) {
+            const bookings = BookingAPI.getAllBookings();
+            const booking = bookings.find(b => b.id === bookingId);
+            
+            if (booking) {
+                const newName = prompt('Имя гостя:', booking.name);
+                if (newName !== null) {
+                    booking.name = newName;
+                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                    showNotification('Имя гостя обновлено', 'success');
+                    loadBookings();
+                }
+            }
+        }
+        
+        // Экспорт заявок в CSV
+        function exportToCSV() {
+            const bookings = BookingAPI.getAllBookings();
+            if (bookings.length === 0) {
+                showNotification('Нет данных для экспорта', 'error');
+                return;
+            }
+            
+            // Заголовки CSV
+            let csv = 'ID;Имя;Телефон;Email;Дата заезда;Дата выезда;Гости;Статус;Дата создания\n';
+            
+            // Данные
+            bookings.forEach(booking => {
+                csv += `${booking.id};"${booking.name}";"${booking.phone}";"${booking.email}";"${booking.checkin}";"${booking.checkout}";"${booking.guests}";"${getStatusText(booking.status)}";"${new Date(booking.createdAt).toLocaleString('ru-RU')}"\n`;
+            });
+            
+            // Создаем blob и ссылку для скачивания
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', `bookings_${new Date().toISOString().slice(0, 10)}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('Данные экспортированы в CSV', 'success');
+        }
+        
+        // Показать уведомление
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            // Загружаем заявки при загрузке страницы
+            loadBookings();
+            
+            // Обновляем при изменении фильтров
+            document.getElementById('status-filter').addEventListener('change', loadBookings);
+            document.getElementById('date-from').addEventListener('change', loadBookings);
+            document.getElementById('date-to').addEventListener('change', loadBookings);
+            document.getElementById('search').addEventListener('input', loadBookings);
+            
+            // Кнопка обновления
+            document.getElementById('refresh-btn').addEventListener('click', loadBookings);
+            
+            // Кнопка экспорта
+            document.getElementById('export-btn').addEventListener('click', exportToCSV);
+            
+            // Кнопка очистки
+            document.getElementById('clear-btn').addEventListener('click', function() {
+                if (confirm('Вы уверены, что хотите удалить ВСЕ заявки? Это действие нельзя отменить.')) {
+                    BookingAPI.clearAllBookings();
+                    loadBookings();
+                    showNotification('Все заявки удалены', 'success');
+                }
+            });
+        });
+        
+        // Инструкция для просмотра в консоли
+        console.log('Для просмотра заявок в localStorage выполните в консоли:');
+        console.log('JSON.parse(localStorage.getItem("bookings") || "[]")');
+    </script>
+</body>
+</html>

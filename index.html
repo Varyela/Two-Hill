@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гостевой дом "Два холма" в Русской Селитьбе | Забронируйте отдых в деревне</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #6d4c41;
+            --accent-color: #ffa000;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+        
+        .hero {
+            background: 
+                linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                url('https://sun9-30.userapi.com/s/v1/if2/nE7v3OEm1JzlTy7dVISrrZz0lehyKZIGt2s9e-L6Dk3KFKwlLdCDwZ6eXnf4oeI02HnImPVDpobmW3pO9x3EV428.jpg?quality=95&as=32x24,48x36,72x54,108x81,160x120,240x180,360x270,480x360,540x405,640x480,720x540,1080x810,1280x960,1440x1080,2560x1920&from=bu&cs=2560x0') 
+                no-repeat center center / cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        /* Убираем отступ сверху для героя, так как хедер теперь поверх него */
+        body {
+            margin-top: 0;
+        }
+        
+        /* Делаем хедер абсолютно позиционированным, чтобы он не влиял на поток */
+        header {
+            position: absolute;
+            background-color: rgba(46, 125, 50, 0.9);
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            margin-top: 60px; /* Чтобы контент не перекрывался хедером */
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #e69100;
+        }
+        
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+        }
+        
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .services {
+            background-color: var(--light-color);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .service-content {
+            padding: 1.5rem;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .gallery-item {
+            height: 250px;
+            overflow: hidden;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .video-section {
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+        }
+        
+        .video-section .section-title {
+            color: white;
+        }
+        
+        .video-container {
+            position: relative;
+            max-width: 853px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-description {
+            margin-top: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .booking {
+            background-color: var(--light-color);
+        }
+        
+        .booking-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .contact-info p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+        }
+        
+        /* Модальное окно для галереи */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+        }
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 80%;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #bbb;
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .hero-content {
+                margin-top: 100px;
+                padding: 1.5rem;
+            }
+            
+            .video-container {
+                max-width: 100%;
+            }
+            
+            .modal-content {
+                max-width: 95%;
+                max-height: 70%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">Два холма</div>
+            <nav>
+                <ul>
+                    <li><a href="#about">О нас</a></li>
+                    <li><a href="#services">Услуги</a></li>
+                    <li><a href="#gallery">Галерея</a></li>
+                    <li><a href="#video">Видео</a></li>
+                    <li><a href="#booking">Забронировать</a></li>
+                    <li><a href="#contacts">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Гостевой дом "Два холма"</h1>
+            <p>Погрузитесь в атмосферу традиционного русского гостеприимства в нашем гостевом доме в селе Русская Селитьба</p>
+            <a href="#booking" class="btn">Забронировать сейчас</a>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <h2 class="section-title">О гостевом доме "Два холма"</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>Гостевой дом "Два холма" расположен в живописном селе Русская Селитьба с богатой историей и традициями. Наш дом находится между двумя холмами, что создает уникальную атмосферу уединения и покоя.</p>
+                <p>Мы предлагаем нашим гостям комфортное проживание в традиционном русском стиле с современными удобствами. Здесь вы сможете отдохнуть от городской суеты, насладиться свежим воздухом и познакомиться с местной культурой.</p>
+                <p>Наша семья с радостью поделится с вами секретами местной кухни, расскажет об истории села и организует настоящий русский отдых с банькой, рыбалкой и народными гуляниями.</p>
+            </div>
+            <div class="about-image">
+                <img src="https://sun9-64.userapi.com/s/v1/if2/qklsHT721erxre68oDHRwOA5EB31EAr8KFyFOzRBopRB4vBNdRs58WwRQeJ5cS-UtsmkpwO75ME1tKb20JnMRB_e.jpg?quality=95&as=32x24,48x36,72x54,108x81,160x120,240x180,360x270,480x360,540x405,640x480,720x540,1080x810,1280x960,1440x1080,2560x1920&from=bu&cs=2560x0" alt="Гостевой дом Два холма">
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <h2 class="section-title">Наши услуги</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-image">
+                    <img src="https://sun9-79.userapi.com/s/v1/if2/vLpjRQdyYxqcj65kRFJjOVwYhNN3Jf_2EKK6cd2IgoaKUhiD1wSgPJem9Jm4bvDYmDurOjPVHpZivihc_DseerFG.jpg?quality=95&as=32x24,48x36,72x54,108x81,160x120,240x180,360x270,480x360,540x405,640x480,720x540,1080x810,1280x960&from=bu&cs=1280x0" alt="Гостевой дом">
+                </div>
+                <div class="service-content">
+                    <h3>Проживание в гостевом доме</h3>
+                    <p>Уютные номера с традиционным русским интерьером и современными удобствами. Вместимость до 6 человек.</p>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-image">
+                    <img src="https://sun9-30.userapi.com/s/v1/ig2/VI6BIT4t4lJU4JzlF_eyrPO6prVemp0FyWWvlfbVqY8rvga9mNj65egzHYUXjEZIBwZBqHDEEeWjC1vUL8wCdonm.jpg?quality=95&as=32x43,48x64,72x96,108x144,160x213,240x320,360x480,480x640,540x720,640x853,720x960,960x1280&from=bu&cs=960x0" alt="Русская баня">
+                </div>
+                <div class="service-content">
+                    <h3>Русская баня</h3>
+                    <p>Настоящая русская баня на дровах с вениками и ароматными травами. Идеальное место для расслабления.</p>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-image">
+                    <img src="https://sun9-71.userapi.com/s/v1/if2/dbZhxW_tRjHes-Xtm4cf7WShGfQikuhdZUqYqSKBS1e6AEilhcTbXlGSka0aggWpIiXU-xPv2S1sp69VAzeJfjgP.jpg?quality=95&as=32x24,48x36,72x54,108x81,160x120,240x180,360x270,480x360,540x405,640x480,720x540,1080x810,1280x960,1440x1080,2560x1920&from=bu&cs=2560x0" alt="Экскурсии">
+                </div>
+                <div class="service-content">
+                    <h3>Экскурсии по окрестностям</h3>
+                    <p>Познавательные прогулки по историческим местам, посещение местных достопримечательностей и мастер-классы.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="gallery">
+        <h2 class="section-title">Галерея</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://sun9-64.userapi.com/s/v1/if2/qklsHT721erxre68oDHRwOA5EB31EAr8KFyFOzRBopRB4vBNdRs58WwRQeJ5cS-UtsmkpwO75ME1tKb20JnMRB_e.jpg?quality=95&as=32x24,48x36,72x54,108x81,160x120,240x180,360x270,480x360,540x405,640x480,720x540,1080x810,1280x960,1440x1080,2560x1920&from=bu&cs=2560x0" alt="Гостевой дом Два холма">
+            </div>
+            <div class="gallery-item">
+                <img src="https://sun9-79.userapi.com/s/v1/if2/vLpjRQdyYxqcj65kRFJjOVwYhNN3Jf_2EKK6cd2IgoaKUhiD1wSgPJem9Jm4bvDYmDurOjPVHpZivihc_DseerFG.jpg?quality=95&as=32x24,48x36,72x54,108x81,160x120,240x180,360x270,480x360,540x405,640x480,720x540,1080x810,1280x960&from=bu&cs=1280x0" alt="Интерьер">
+            </div>
+            <div class="gallery-item">
+                <img src="https://sun9-40.userapi.com/s/v1/ig2/RbSXs4k5Gls3FHU0lAUF6TR6NvLw2yjrWPvKOxSqvCBcZC6MENPPOWQkO1t6U3coBfkjBWNJBu-0OoUOYShx2PPv.jpg?quality=95&as=32x57,48x85,72x128,108x192,160x285,240x427,360x640,480x854,540x961,640x1139,720x1281,1080x1921,1280x2277,1439x2560&from=bu&cs=1439x0" alt="Природа">
+            </div>
+            <div class="gallery-item">
+                <img src="https://sun9-71.userapi.com/s/v1/if2/dbZhxW_tRjHes-Xtm4cf7WShGfQikuhdZUqYqSKBS1e6AEilhcTbXlGSka0aggWpIiXU-xPv2S1sp69VAzeJfjgP.jpg?quality=95&as=32x24,48x36,72x54,108x81,160x120,240x180,360x270,480x360,540x405,640x480,720x540,1080x810,1280x960,1440x1080,2560x1920&from=bu&cs=2560x0" alt="Баня">
+            </div>
+            <div class="gallery-item">
+                <img src="https://sun9-30.userapi.com/s/v1/if2/nE7v3OEm1JzlTy7dVISrrZz0lehyKZIGt2s9e-L6Dk3KFKwlLdCDwZ6eXnf4oeI02HnImPVDpobmW3pO9x3EV428.jpg?quality=95&as=32x24,48x36,72x54,108x81,160x120,240x180,360x270,480x360,540x405,640x480,720x540,1080x810,1280x960,1440x1080,2560x1920&from=bu&cs=2560x0" alt="Мероприятия">
+            </div>
+            <div class="gallery-item">
+                <img src="https://sun9-49.userapi.com/s/v1/if2/p7-bhfHAEuNoQvbVo8zdxFC0vX1-CAXTzv-ZLD49gw6iL51SKZI-ur6mDW78VsxfKIcPEbluLmhsl8Z8CyKy63eY.jpg?quality=95&as=32x24,48x36,72x54,108x81,160x120,240x180,360x270,480x360,540x405,640x480,720x540,1080x810,1280x960,1440x1080,2560x1920&from=bu&cs=2560x0" alt="Еда">
+            </div>
+        </div>
+    </section>
+
+    <!-- Модальное окно для галереи -->
+    <div id="galleryModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <section id="video" class="video-section">
+        <h2 class="section-title">Видео о нашем гостевом доме</h2>
+        <div class="video-container">
+            <div class="video-wrapper">
+                <iframe src="https://vk.com/video_ext.php?oid=-228556700&id=456239082&hd=2&autoplay=0" width="853" height="480" allow="encrypted-media; fullscreen; picture-in-picture;" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="video-description">
+            <p>Посмотрите наше видео, чтобы лучше познакомиться с атмосферой гостевого дома "Два холма". Увидьте своими глазами уютные комнаты, прекрасные окрестности и все возможности для отдыха, которые мы предлагаем нашим гостям.</p>
+        </div>
+    </section>
+
+    <section id="booking" class="booking">
+        <h2 class="section-title">Забронировать проживание</h2>
+        <div class="booking-form">
+            <form id="booking-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Ваше имя</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="guests">Количество гостей</label>
+                        <select id="guests" name="guests" required>
+                            <option value="">Выберите количество</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6+</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="checkin">Дата заезда</label>
+                        <input type="date" id="checkin" name="checkin" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkout">Дата выезда</label>
+                        <input type="date" id="checkout" name="checkout" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message">Дополнительные пожелания</label>
+                    <textarea id="message" name="message" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn">Отправить заявку</button>
+            </form>
+        </div>
+    </section>
+
+    <footer id="contacts">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Гостевой дом "Два холма"</h3>
+                <p>Уютный отдых в традиционном русском стиле с современным комфортом.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <div class="contact-info">
+                    <p>Адрес: село Русская Селитьба, ул. Кооперативная, 59в</p>
+                    <p>Телефон: +7 961 384 8030</p>
+                    <p>Телефон: +7 964 977 3967</p>
+                    <p>Email: info@dvaholma.ru</p>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Мы в соцсетях</h3>
+                <div class="social-links">
+                    <a href="https://m.vk.com/twohills" target="_blank" title="Наша группа ВКонтакте">
+                        <i class="fab fa-vk"></i>
+                    </a>
+                    <a href="#" title="Telegram">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    <a href="#" title="Max">
+                        <i class="fas fa-comment"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Гостевой дом "Два холма". Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Обработка формы бронирования
+        document.getElementById('booking-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Здесь будет код для отправки данных формы на сервер
+            // В реальном приложении здесь будет AJAX-запрос или интеграция с сервисом бронирования
+            
+            alert('Спасибо за вашу заявку! Мы свяжемся с вами в ближайшее время для подтверждения бронирования.');
+            this.reset();
+        });
+
+        // Плавная прокрутка к якорям
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Модальное окно для галереи
+        const modal = document.getElementById("galleryModal");
+        const modalImg = document.getElementById("modalImage");
+        const closeBtn = document.getElementsByClassName("close")[0];
+
+        // Добавляем обработчики клика на все изображения галереи
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            img.addEventListener('click', function() {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            });
+        });
+
+        // Закрытие модального окна
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Закрытие при клике вне изображения
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
